@@ -15,12 +15,6 @@ Dessa forma, o programa ira buscar os dados do arquivo excel por exemplo, e isso
 
 Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job ou algo assim). Infelizmente não é possivel um job ler um arquivo que esta no computador do usuario (apenas arquivos no proprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser lidos pelo job em um segundo momento. Para esse necesssidade que este programa foi criado.
 
-Isso seguira os seguintes passos
-
-
-That will use a dynamic table as a filter on the select instruction, only the screen fields that have been filled. The empty screen fields are going not to be considered.
-
-
 
 
 ## Tecnologia adotada ##
@@ -45,3 +39,8 @@ flowchart TD
 ## Example
 
 You can see the example on this [file](cluster.abap).
+
+## EN Version ##
+That will use a dynamic table as a filter on the select instruction, only the screen fields that have been filled. The empty screen fields are going not to be considered.
+
+##
