@@ -91,6 +91,14 @@ CLASS lcl_local IMPLEMENTATION.
   ENDMETHOD .
 
 
+  METHOD get_data_from_file .
+  ENDMETHOD .
+
+
+  METHOD export_data .
+  ENDMETHOD .
+
+
   METHOD job_open .
 
     CLEAR:
@@ -168,26 +176,10 @@ START-OF-SELECTION .
 
   " Background
   IF ( p_backg EQ abap_false ) .
-    lcl_local=>create_job( file = p_file ) .
+    NEW lcl_local( )->create_job( file = p_file ) .
   ENDIF .
 
   " Online
   IF ( p_backg EQ abap_true ) .
-    lcl_local=>process_job( ) .
+    NEW lcl_local( )->process_job( ) .
   ENDIF .
-
-
-
-*  IF ws_indx-begdt IS INITIAL.
-*    ws_indx-begdt = sy-datum.
-*  ENDIF.
-*
-*  ws_indx-aedat = sy-datum.
-*  ws_indx-usera = sy-uname.
-*  ws_indx-pgmid = sy-cprog.
-*
-*  EXPORT p1 = is_option TO DATABASE indx(xl) FROM ws_indx ID ws_indx-srtfd.
-*
-*  IF sy-subrc = 0.
-*    ws_option = is_option.
-*  ENDIF.
