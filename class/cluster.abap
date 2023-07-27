@@ -125,16 +125,13 @@ CLASS lcl_local IMPLEMENTATION.
 
   METHOD job_submit .
 
-    CONSTANTS:
-      lc_report TYPE tbtcstep-program VALUE 'ZFI_JOBS_MONTHLY_EXTRACTION' .
-
-    IF ( im_variant IS INITIAL ) .
+    IF ( im_jobname IS INITIAL ) OR
+       ( im_jobnumber IS INITIAL ) .
       RETURN .
     ENDIF .
 
     SUBMIT zfi_jobs_monthly_extraction
-      WITH p_varian EQ im_variant
-      WITH p_debug  EQ im_debug
+      WITH p_backg EQ abap_on
       USER syst-uname
    VIA JOB im_jobname
     NUMBER im_jobnumber AND RETURN .
