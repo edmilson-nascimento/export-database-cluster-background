@@ -42,7 +42,13 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
       IMPORTING
         !im_data      TYPE tab_excel
       RETURNING
-        VALUE(result) TYPE string .
+        VALUE(result) TYPE indx-srtfd .
+    "! <p class="shorttext synchronized" lang="pt">Retorna o Dados de importação</p>
+    METHODS import_data
+      IMPORTING
+        !im_key       TYPE indx-srtfd
+      RETURNING
+        VALUE(result) TYPE tab_excel .
     "! <p class="shorttext synchronized" lang="pt">Retorna o número do job apos feita a inicialização</p>
     METHODS job_open
       EXPORTING
@@ -92,10 +98,84 @@ CLASS lcl_local IMPLEMENTATION.
 
 
   METHOD get_data_from_file .
+
+    " Esta rotina deve ser atualizada para buscar dados
+    " do arquivo/ficheiro informado na tela de seleção
+    TRY .
+        result = VALUE #(
+          ( id   = '01'
+            info = |01 { cl_system_uuid=>create_uuid_c32_static( ) }| )
+          ( id   = '02'
+            info = |02 { cl_system_uuid=>create_uuid_c32_static( ) }| )
+          ( id   = '03'
+            info = |03 { cl_system_uuid=>create_uuid_c32_static( ) }| )
+          ( id   = '04'
+            info = |04 { cl_system_uuid=>create_uuid_c32_static( ) }| )
+          ( id   = '05'
+            info = |05 { cl_system_uuid=>create_uuid_c32_static( ) }| )
+        ).
+      CATCH cx_uuid_error  .
+    ENDTRY .
+
   ENDMETHOD .
 
 
   METHOD export_data .
+
+    IF ( lines( im_data ) EQ 0 ) .
+      RETURN .
+    ENDIF .
+
+    " Atribuindo para nome usado para import/export
+    DATA(lt_data) = im_data .
+
+    " Enviando dados para tabela cluster
+    DATA(key) = CONV indx-srtfd( 'ZZ_TEST' ) .
+    EXPORT lt_data FROM lt_data TO DATABASE indx(zz) ID key.
+
+    IF ( sy-subrc EQ 0 ) .
+      result = key .
+    ENDIF.
+
+  ENDMETHOD .
+
+
+  METHOD import_data .
+
+    DATA:
+      lt_data   TYPE tab_excel,
+      lr_expimp TYPE REF TO cl_abap_expimp_db.
+
+    IF ( im_key IS INITIAL ) .
+      RETURN .
+    ENDIF .
+
+    " Buscando dados da tabela cluster
+    IMPORT lt_data TO lt_data FROM DATABASE indx(zz) ID im_key.
+    IF ( sy-subrc EQ 0 ) .
+      result = lt_data .
+    ENDIF .
+
+    CREATE OBJECT lr_expimp .
+    IF ( lr_expimp IS NOT BOUND ) .
+      RETURN .
+    ENDIF .
+
+    TRY.
+        " DELETE FROM DATABASE INDX(ZZ) ID KEY.
+        CALL METHOD lr_expimp->delete
+          EXPORTING
+            tabname          = 'indx'
+            client           = '200'
+            area             = 'zz'
+            id               = im_key
+*           GENERIC_KEY      = ABAP_FALSE
+            client_specified = abap_true.
+      CATCH cx_sy_client .
+      CATCH cx_sy_generic_key .
+      CATCH cx_sy_incorrect_key .
+    ENDTRY.
+
   ENDMETHOD .
 
 
