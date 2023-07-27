@@ -7,4 +7,4 @@ That will use a dynamic table as a filter on the select instruction, only the sc
 
 ## Example
 
-You can see the example on this [file](file.abap).
+You can see the example on this [file](cluster.abap).
