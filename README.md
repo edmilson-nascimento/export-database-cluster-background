@@ -16,7 +16,6 @@ Dessa forma, o programa ira buscar os dados do arquivo excel por exemplo, e isso
 Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job ou algo assim). Infelizmente não é possivel um job ler um arquivo que esta no computador do usuario (apenas arquivos no proprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser lidos pelo job em um segundo momento. Para esse necesssidade que este programa foi criado.
 
 
-
 ## Tecnologia adotada ##
 ABAP usando `cl_salv_bs_runtime_info` para recuperar os dados do relatório. Modulos de funções para mater variantes temporarias. 
 
