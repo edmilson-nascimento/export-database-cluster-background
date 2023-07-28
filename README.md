@@ -61,5 +61,5 @@ flowchart TD
 
 ## Example
 
-You can see the example on this [file](cluster.abap).
+You can see the example on this [file](/class/cluster.abap).
 
