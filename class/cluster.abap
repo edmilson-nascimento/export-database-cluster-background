@@ -5,8 +5,6 @@ REPORT ytest .
 CLASS lcl_local DEFINITION CREATE PUBLIC.
 
   PUBLIC SECTION.
-
-
     TYPES:
       "! <p class="shorttext synchronized" lang="pt">Tipo de dados (estrutura) para representar o modelo de excel</p>
       BEGIN OF ty_excel,
@@ -25,7 +23,7 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
     "! <p class="shorttext synchronized" lang="pt">Executa o processamento do job</p>
     METHODS process_job
       IMPORTING
-        !id TYPE string OPTIONAL .
+        !im_key TYPE indx-srtfd .
 
   PROTECTED SECTION.
 
@@ -57,6 +55,7 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
     "! <p class="shorttext synchronized" lang="pt">Realiza o submit do job e informa os dados necessarios</p>
     METHODS job_submit
       IMPORTING
+        !im_key       TYPE indx-srtfd
         !im_jobname   TYPE tbtcjob-jobname
         !im_jobnumber TYPE tbtcjob-jobcount
       RETURNING
@@ -75,25 +74,37 @@ CLASS lcl_local IMPLEMENTATION.
 
     DATA(lt_data) = me->get_data_from_file( file ) .
 
-    DATA(id) = me->export_data( lt_data ) .
+    DATA(key) = me->export_data( lt_data ) .
 
-    me->job_open( IMPORTING ex_jobname   = DATA(lv_jobname)
-                            ex_jobnumber = DATA(lv_jobnumber) ) .
+    me->job_open( IMPORTING ex_jobname   = DATA(jobname)
+                            ex_jobnumber = DATA(jobnumber) ) .
 
-    IF ( lv_jobname IS INITIAL ) .
+    IF ( jobname IS INITIAL ) .
       RETURN .
     ENDIF .
 
-    IF ( me->job_submit( im_jobname   = lv_jobname
-                         im_jobnumber = lv_jobnumber ) EQ abap_false ) .
+    IF ( me->job_submit( im_key       = key
+                         im_jobname   = jobname
+                         im_jobnumber = jobnumber ) EQ abap_false ) .
       RETURN .
     ENDIF .
 
-    me->job_close( im_jobname   = lv_jobname
-                   im_jobnumber = lv_jobnumber ) .
+    me->job_close( im_jobname   = jobname
+                   im_jobnumber = jobnumber ) .
   ENDMETHOD .
 
   METHOD process_job .
+
+    DO .
+    ENDDO.
+
+    DATA(lt_data) = me->import_data( im_key = im_key ) .
+    if ( lins )
+
+    cl_demo_output=>display( lt_data ) .
+    
+    lt_data
+
   ENDMETHOD .
 
 
@@ -130,8 +141,15 @@ CLASS lcl_local IMPLEMENTATION.
     DATA(lt_data) = im_data .
 
     " Enviando dados para tabela cluster
-    DATA(key) = CONV indx-srtfd( 'ZZ_TEST' ) .
-    EXPORT lt_data FROM lt_data TO DATABASE indx(zz) ID key.
+    DATA(from) = VALUE indx(
+      aedat  = sy-datum
+      usera  = sy-uname
+      pgmid  = sy-cprog
+    ).
+
+*   DATA(key) = CONV indx-srtfd( 'ZZ_TEST' ) .
+    DATA(key) = CONV indx-srtfd( |ZZ-{ sy-uname }-{ sy-uzeit }| ) .
+    EXPORT lt_data FROM lt_data TO DATABASE indx(zz) FROM from ID key .
 
     IF ( sy-subrc EQ 0 ) .
       result = key .
@@ -150,8 +168,11 @@ CLASS lcl_local IMPLEMENTATION.
       RETURN .
     ENDIF .
 
-    " Buscando dados da tabela cluster
-    IMPORT lt_data TO lt_data FROM DATABASE indx(zz) ID im_key.
+    IMPORT lt_data
+        TO lt_data
+      FROM DATABASE indx(zz)
+        ID im_key.
+
     IF ( sy-subrc EQ 0 ) .
       result = lt_data .
     ENDIF .
@@ -161,15 +182,15 @@ CLASS lcl_local IMPLEMENTATION.
       RETURN .
     ENDIF .
 
+    " DELETE FROM DATABASE INDX(ZZ) ID KEY.
     TRY.
-        " DELETE FROM DATABASE INDX(ZZ) ID KEY.
         CALL METHOD lr_expimp->delete
           EXPORTING
-            tabname          = 'indx'
+            tabname          = 'INDX'
             client           = '200'
-            area             = 'zz'
+            area             = 'ZZ'
             id               = im_key
-*           GENERIC_KEY      = ABAP_FALSE
+*           generic_key      = abap_false
             client_specified = abap_true.
       CATCH cx_sy_client .
       CATCH cx_sy_generic_key .
@@ -185,7 +206,7 @@ CLASS lcl_local IMPLEMENTATION.
       ex_jobname, ex_jobnumber .
 
     TRY .
-        ex_jobname = CONV btcjob( |{ cl_system_uuid=>create_uuid_x16_static( ) }| ) .
+        ex_jobname = CONV btcjob( |ZZ.{ cl_system_uuid=>create_uuid_x16_static( ) }| ) .
       CATCH cx_uuid_error  .
     ENDTRY .
 
@@ -218,8 +239,8 @@ CLASS lcl_local IMPLEMENTATION.
       RETURN .
     ENDIF .
 
-    SUBMIT zfi_jobs_monthly_extraction
-      WITH p_backg EQ abap_on
+    SUBMIT ytest
+      WITH p_id EQ im_key
       USER syst-uname
    VIA JOB im_jobname
     NUMBER im_jobnumber AND RETURN .
@@ -249,17 +270,15 @@ CLASS lcl_local IMPLEMENTATION.
 ENDCLASS.
 
 PARAMETERS:
-  p_file  TYPE string,
-  p_backg TYPE check NO-DISPLAY.
+  p_file TYPE string NO-DISPLAY, " Pode ser exibido para passar um file
+  p_id   TYPE indx-srtfd NO-DISPLAY.
 
 START-OF-SELECTION .
 
-  " Background
-  IF ( p_backg EQ abap_false ) .
+  IF ( p_id IS NOT INITIAL ) .
+    " Background
+    NEW lcl_local( )->process_job( p_id ) .
+  ELSE .
+    " Online
     NEW lcl_local( )->create_job( file = p_file ) .
-  ENDIF .
-
-  " Online
-  IF ( p_backg EQ abap_true ) .
-    NEW lcl_local( )->process_job( ) .
   ENDIF .
