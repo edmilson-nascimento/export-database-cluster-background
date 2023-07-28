@@ -65,6 +65,10 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
       IMPORTING
         !im_jobname   TYPE tbtcjob-jobname
         !im_jobnumber TYPE tbtcjob-jobcount .
+    "! <p class="shorttext synchronized" lang="pt">Exibir dados que foram recuperados</p>
+    METHODS display_data
+      IMPORTING
+        !im_data TYPE STANDARD TABLE .
 
 ENDCLASS.
 
@@ -99,11 +103,14 @@ CLASS lcl_local IMPLEMENTATION.
     ENDDO.
 
     DATA(lt_data) = me->import_data( im_key = im_key ) .
-    if ( lins )
+    IF ( lines( lt_data ) EQ 0 ) .
+      lt_data = VALUE #(
+        ( id   = 00
+          info = 'There is no data' )
+      ).
+    ENDIF .
 
-    cl_demo_output=>display( lt_data ) .
-    
-    lt_data
+    me->display_data( lt_data ) .
 
   ENDMETHOD .
 
@@ -264,6 +271,15 @@ CLASS lcl_local IMPLEMENTATION.
         strtimmed        = 'X'
       IMPORTING
         job_was_released = job_was_released.
+
+  ENDMETHOD .
+
+
+  METHOD display_data .
+
+    IF ( lines( im_data ) EQ 0 ) .
+      RETURN .
+    ENDIF .
 
   ENDMETHOD .
 
