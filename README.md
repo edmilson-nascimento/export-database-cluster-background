@@ -6,14 +6,14 @@
 Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execução por job, tera acesso a dados que foram lidos de um arquivo/ficheiro ~~neste caso, so uma tabela interna porque eu não vou criar tudo~~ na primeira vez.
 
 ## Necessidade ##
-Em alguns casos, existe a necessidade de que no report:
+Em alguns casos, existe a necessidade de:
 - Informar dados para processamento
 - Informar tambem um arquivo
 - Habilitar uma opção de processamento em background
 
-Dessa forma, o programa ira buscar os dados do arquivo excel por exemplo, e isso ira gerar um processamento em background com esses dados e/ou os dados da tela inicial. Para esse tipo de solução, é comum usar uma chamada do mesmo programa, criando um job ou algo assim. 
+Dessa forma, o programa irá buscar os dados de um arquivo excel por exemplo, e isso irá gerar um processamento em background com esses dados e/ou os dados da tela inicial. Para esse tipo de solução, é comum usar uma chamada do mesmo programa, criando um job ou algo nessa linha. 
 
-Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job ou algo assim). Infelizmente não é possivel um job ler um arquivo que esta no computador do usuario (apenas arquivos no proprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser lidos pelo job em um segundo momento. Para esse necesssidade que este programa foi criado.
+Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job e etc). Infelizmente não é possivel um job ler um arquivo que esta no computador do usuario (apenas arquivos no proprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser acessados pelo job em um segundo momento. Para esse necesssidade que este programa foi criado.
 
 
 ## Tecnologia adotada ##
