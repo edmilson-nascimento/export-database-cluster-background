@@ -67,8 +67,8 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
         !im_jobnumber TYPE tbtcjob-jobcount .
     "! <p class="shorttext synchronized" lang="pt">Exibir dados que foram recuperados</p>
     METHODS display_data
-      IMPORTING
-        !im_data TYPE STANDARD TABLE .
+      CHANGING
+        !ch_data TYPE STANDARD TABLE .
 
 ENDCLASS.
 
@@ -99,8 +99,8 @@ CLASS lcl_local IMPLEMENTATION.
 
   METHOD process_job .
 
-    DO .
-    ENDDO.
+*    DO .
+*    ENDDO.
 
     DATA(lt_data) = me->import_data( im_key = im_key ) .
     IF ( lines( lt_data ) EQ 0 ) .
@@ -110,7 +110,7 @@ CLASS lcl_local IMPLEMENTATION.
       ).
     ENDIF .
 
-    me->display_data( lt_data ) .
+    me->display_data( CHANGING ch_data = lt_data ) .
 
   ENDMETHOD .
 
@@ -154,7 +154,6 @@ CLASS lcl_local IMPLEMENTATION.
       pgmid  = sy-cprog
     ).
 
-*   DATA(key) = CONV indx-srtfd( 'ZZ_TEST' ) .
     DATA(key) = CONV indx-srtfd( |ZZ-{ sy-uname }-{ sy-uzeit }| ) .
     EXPORT lt_data FROM lt_data TO DATABASE indx(zz) FROM from ID key .
 
@@ -277,9 +276,23 @@ CLASS lcl_local IMPLEMENTATION.
 
   METHOD display_data .
 
-    IF ( lines( im_data ) EQ 0 ) .
+    DATA:
+      salv_table TYPE REF TO cl_salv_table .
+
+    IF ( lines( ch_data ) EQ 0 ) .
       RETURN .
     ENDIF .
+
+    TRY.
+        CALL METHOD cl_salv_table=>factory
+          IMPORTING
+            r_salv_table = salv_table
+          CHANGING
+            t_table      = ch_data.
+      CATCH cx_salv_msg.
+    ENDTRY.
+
+    salv_table->display( ) .
 
   ENDMETHOD .
 
