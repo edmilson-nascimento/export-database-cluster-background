@@ -56,16 +56,6 @@ flowchart TD
     Process --> FinishNew((( )))
 ```
 
-## Fluxo do projeto ##
-~~Para usar um grafico Mermaid~~ Para melhor entendimento do processo, segue abaixo fluxo .
-```mermaid
-flowchart TD
-    Start((start)) --> SAPData[(Buscar dados)]
-    SAPData --> SAPExpor(Exportar dados)
-    SAPExpor --> Job(Criar Job)
-    Job --> FinishNew((( )))
-```
-
 
 **Esse código é aberto, sujeito a alterações ~~a hora que me der na telha~~ assim que houver uma necessidade que trará ganho didático ao conteúdo e deixe o algoritmo com melhor leitura e compreensão.**
 
