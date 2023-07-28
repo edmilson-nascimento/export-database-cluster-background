@@ -3,10 +3,10 @@
 
 [![N|Solid](https://wiki.scn.sap.com/wiki/download/attachments/1710/ABAP%20Development.png?version=1&modificationDate=1446673897000&api=v2)](https://www.sap.com/brazil/developer.html)
 
-Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execução por job, ter acesso a dados que foram lidos de um arquivo/ficheiro na primeira vez.
+Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execução por job, tera acesso a dados que foram lidos de um arquivo/ficheiro ~~neste caso, so uma tabela interna porque eu não vou criar tudo~~ na primeira vez.
 
 ## Necessidade ##
-Em alguns casos, existe a necessidade de, em um report:
+Em alguns casos, existe a necessidade de que no report:
 - Informar dados para processamento
 - Informar tambem um arquivo
 - Habilitar uma opção de processamento em background
