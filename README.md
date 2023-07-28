@@ -17,21 +17,55 @@ Para casos assim, é interessante buscar os dados do arquivo antes de fazer a ch
 
 
 ## Tecnologia adotada ##
-ABAP usando `cl_salv_bs_runtime_info` para recuperar os dados do relatório. Modulos de funções para mater variantes temporarias. 
+ABAP usando `export/import ... database` ~~por usar export memory so da trabalho e os dados ficam perdidos em nárnia~~ para gerir o export/import de dados. 
 
 
 ## Solução ##
-A variante é gerada por um periodo de um mês. A Solução ira dividir isso partes/cotas e salvar isso em `EXPORT lt_data FROM lt_data TO DATABASE indx(ZZ) ID key.` . Apos isso, salvar isso no server.
+O programa será executado duas vezes e em cada uma tera uma funcionalidade diferente.
+1- Buscar, exportar os dados e gerar o job
+2- Recuperar os dados e processa-los
+
+### Fase 1 - busca, exportação e criação de job ### 
+Para essa parte, o fluxo seguido será
+- Informar os dados de processamento
+    - Arquivo
+    - Dados necessarios
+    - Etc
+- Executar o programa para importação dos dados do arquivo ~~que nesse caso, eu vou informar manualmente porque eu não quis criar as rotinas de importar do excel~~
+- Exportar os dados para a tabela `Cluster DataBase`
+- Criar o job passando o `ID` gerado para esses dados
+```mermaid
+flowchart TD
+    Start((start)) --> SAPData[(Buscar dados)]
+    SAPData --> SAPExpor(Exportar dados)
+    SAPExpor --> Job(Criar Job)
+    Job --> FinishNew((( )))
+```
+
+### Fase 2 - Importação e processamento ###
+Essa parte ja será executa como job. A partir desse ponto segue-se o seguinte fluxo:
+- Importar os dados da tabela `Cluster DataBase`
+- Eliminar os dados da tabela
+- Processar os dados 
+
+```mermaid
+flowchart TD 
+    Start((start)) --> SAPData[(Importar dados)]
+    SAPData --> Del(Deletar dados)
+    Del --> Process(Processar dados)
+    Process --> FinishNew((( )))
+```
 
 ## Fluxo do projeto ##
 ~~Para usar um grafico Mermaid~~ Para melhor entendimento do processo, segue abaixo fluxo .
 ```mermaid
 flowchart TD
     Start((start)) --> SAPData[(Buscar dados)]
-    SAPData --> SAPProcess(Processar dados)
-    SAPProcess --> SAPInfo(Exibir Informações)
-    SAPInfo --> FinishNew((( )))
+    SAPData --> SAPExpor(Exportar dados)
+    SAPExpor --> Job(Criar Job)
+    Job --> FinishNew((( )))
 ```
+
 
 **Esse código é aberto, sujeito a alterações ~~a hora que me der na telha~~ assim que houver uma necessidade que trará ganho didático ao conteúdo e deixe o algoritmo com melhor leitura e compreensão.**
 
@@ -39,7 +73,3 @@ flowchart TD
 
 You can see the example on this [file](cluster.abap).
 
-## EN Version ##
-That will use a dynamic table as a filter on the select instruction, only the screen fields that have been filled. The empty screen fields are going not to be considered.
-
-##
