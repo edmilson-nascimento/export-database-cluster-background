@@ -35,7 +35,7 @@ Para essa parte, o fluxo seguido será
 - Exportar os dados para a tabela `Cluster DataBase`
 - Criar o job passando o `ID` gerado para esses dados
 ```mermaid
-flowchart TD
+flowchart LR
     Start((start)) --> SAPData[(Buscar dados)]
     SAPData --> SAPExpor(Exportar dados)
     SAPExpor --> Job(Criar Job)
@@ -49,7 +49,7 @@ Essa parte ja será executa como job. A partir desse ponto segue-se o seguinte f
 - Processar os dados 
 
 ```mermaid
-flowchart TD 
+flowchart LR
     Start((start)) --> SAPData[(Importar dados)]
     SAPData --> Del(Deletar dados)
     Del --> Process(Processar dados)
