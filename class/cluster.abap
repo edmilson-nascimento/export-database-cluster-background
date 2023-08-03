@@ -1,7 +1,6 @@
 
 REPORT ytest .
 
-
 CLASS lcl_local DEFINITION CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -14,12 +13,10 @@ CLASS lcl_local DEFINITION CREATE PUBLIC.
       "! <p class="shorttext synchronized" lang="pt">Tipo de dados (tabela) para representar o modelo de excel</p>
       tab_excel TYPE STANDARD TABLE OF ty_excel
                 WITH DEFAULT KEY .
-
     "! <p class="shorttext synchronized" lang="pt">Cria o job com os dados do arquivo</p>
     METHODS create_job
       IMPORTING
         !file TYPE string OPTIONAL .
-
     "! <p class="shorttext synchronized" lang="pt">Executa o processamento do job</p>
     METHODS process_job
       IMPORTING
@@ -310,4 +307,4 @@ START-OF-SELECTION .
   ELSE .
     " Online
     NEW lcl_local( )->create_job( file = p_file ) .
-  ENDIF .
+  ENDIF . 
