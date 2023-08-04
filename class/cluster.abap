@@ -309,4 +309,3 @@ START-OF-SELECTION .
     " Online
     NEW lcl_local( )->create_job( file = p_file ) .
   ENDIF .
-
