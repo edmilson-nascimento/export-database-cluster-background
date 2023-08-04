@@ -130,6 +130,7 @@ CLASS lcl_local IMPLEMENTATION.
             info = |05 { cl_system_uuid=>create_uuid_c32_static( ) }| )
         ).
       CATCH cx_uuid_error  .
+
     ENDTRY .
 
   ENDMETHOD .
@@ -293,7 +294,7 @@ CLASS lcl_local IMPLEMENTATION.
 
   ENDMETHOD .
 
-ENDCLASS.
+ENDCLASS .
 
 PARAMETERS:
   p_file TYPE string NO-DISPLAY, " Pode ser exibido para passar um file
@@ -307,4 +308,5 @@ START-OF-SELECTION .
   ELSE .
     " Online
     NEW lcl_local( )->create_job( file = p_file ) .
-  ENDIF . 
+  ENDIF .
+
