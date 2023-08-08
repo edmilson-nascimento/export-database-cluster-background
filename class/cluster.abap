@@ -297,8 +297,8 @@ CLASS lcl_local IMPLEMENTATION.
 ENDCLASS .
 
 PARAMETERS:
-  p_file TYPE string NO-DISPLAY, " Pode ser exibido para passar um file
-  p_id   TYPE indx-srtfd NO-DISPLAY.
+  p_file TYPE string     NO-DISPLAY, " Pode ser exibido para passar um file
+  p_id   TYPE indx-srtfd NO-DISPLAY .
 
 START-OF-SELECTION .
 
