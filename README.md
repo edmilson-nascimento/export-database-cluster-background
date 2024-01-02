@@ -1,7 +1,11 @@
 
 # Double call program
 
-[![N|Solid](https://wiki.scn.sap.com/wiki/download/attachments/1710/ABAP%20Development.png?version=1&modificationDate=1446673897000&api=v2)](https://www.sap.com/brazil/developer.html)
+
+![Static Badge](https://img.shields.io/badge/development-abap-blue)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/edmilson-nascimento/debug)
+
+
 
 Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execução por job, tera acesso a dados que foram lidos de um arquivo/ficheiro ~~neste caso, so uma tabela interna porque eu não vou criar tudo~~ na primeira vez.
 
