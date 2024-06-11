@@ -1,7 +1,6 @@
 
 # Export Database
 
-
 ![Static Badge](https://img.shields.io/badge/development-abap-blue)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/edmilson-nascimento/export-database-cluster-background)
 
@@ -11,12 +10,12 @@ Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execu
 ## Necessidade ##
 Em alguns casos, existe a necessidade de:
 - Informar dados para processamento
-- Informar tambem um arquivo
+- Informar também um arquivo
 - Habilitar uma opção de processamento em background
 
 Dessa forma, o programa irá buscar os dados de um arquivo excel por exemplo, e isso irá gerar um processamento em background com esses dados e/ou os dados da tela inicial. Para esse tipo de solução, é comum usar uma chamada do mesmo programa, criando um job ou algo nessa linha. 
 
-Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job e etc). Infelizmente não é possivel um job ler um arquivo que esta no computador do usuario (apenas arquivos no proprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser acessados pelo job em um segundo momento. Para esse necesssidade que este programa foi criado.
+Para casos assim, é interessante buscar os dados do arquivo antes de fazer a chamada do programa novamente (via job e etc). Infelizmente não é possível um job ler um arquivo que esta no computador do usuário (apenas arquivos no próprio servidor), por isso, seria interessante ler esses dados e guardar de forma que possam ser acessados pelo job em um segundo momento. Para esse necessidade que este programa foi criado.
 
 
 ## Tecnologia adotada ##
@@ -32,7 +31,7 @@ O programa será executado duas vezes e em cada uma tera uma funcionalidade dife
 Para essa parte, o fluxo seguido será
 - Informar os dados de processamento
     - Arquivo
-    - Dados necessarios
+    - Dados necessários
     - Etc
 - Executar o programa para importação dos dados do arquivo ~~que nesse caso, eu vou informar manualmente porque eu não quis criar as rotinas de importar do excel~~
 - Exportar os dados para a tabela `Cluster DataBase`
