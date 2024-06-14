@@ -63,4 +63,3 @@ flowchart LR
 ## Example
 
 You can see the example on this [file](/class/cluster.abap).
-
