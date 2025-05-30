@@ -1,8 +1,5 @@
 # Export Database
 
-![Static Badge](https://img.shields.io/badge/development-abap-blue)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/edmilson-nascimento/export-database-cluster-background)
-
 ![ABAP](https://img.shields.io/badge/ABAP-0051B5?style=flat&logo=sap&logoColor=white)
 ![SAP](https://img.shields.io/badge/SAP-0FAAFF?style=flat&logo=sap&logoColor=white)
 ![ABAP OO](https://img.shields.io/badge/ABAP_OO-276DC3?style=flat&logo=sap&logoColor=white)
@@ -10,6 +7,7 @@
 [![SAP on-premise](https://img.shields.io/badge/SAP-on--premise-blue?style=flat)](https://www.sap.com/index.html)
 [![Commits](https://img.shields.io/github/commit-activity/t/edmilson-nascimento/export-database-cluster-background?style=flat)](https://github.com/edmilson-nascimento/export-database-cluster-background)
 
+## Descrição
 Um programa será chamado duas vezes. Na segunda vez, provavelmente em uma execução por job, terá acesso a dados que foram lidos de um arquivo/ficheiro ~~neste caso, só uma tabela interna porque eu não vou criar tudo~~ na primeira vez.
 
 ## Necessidade ##
